@@ -17,7 +17,7 @@ on:
         description: docker image to be deployed
 
 env:
-  INGRESS_HOST: ${{ format(inputs.environment == 'prod' && '{0}' || '{0}-{1}', 'bff', inputs.environment) }}nim.games.jf-homelab.de
+  INGRESS_HOST: ${{ format(inputs.environment == 'prod' && '{0}' || '{0}-{1}', 'bff', inputs.environment) }}.nim.games.jf-homelab.de
 
 jobs:
   deploy:
