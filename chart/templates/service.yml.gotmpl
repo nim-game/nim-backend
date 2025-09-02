@@ -6,5 +6,7 @@ spec:
   selector:
     app: {{ .Release.Name }}
   ports:
-    - port: 80
-      targetPort: 3000
+    - name: websocket
+          protocol: TCP
+          port: 8000
+          targetPort: 8000
