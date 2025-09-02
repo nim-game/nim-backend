@@ -1,0 +1,13 @@
+on:
+  pull_request_target:
+    types:
+      - closed
+
+jobs:
+  destroy-review:
+    runs-on: self-hosted
+    steps:
+      - run: >
+          helm uninstall ${{ github.event.repository.name }}-pr-${{ github.event.pull_request.number }}
+          --wait
+          -n ${{ github.event.repository.name }}

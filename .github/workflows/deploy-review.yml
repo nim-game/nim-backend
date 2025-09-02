@@ -1,0 +1,22 @@
+on:
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+
+jobs:
+  containerize:
+    uses: ./.github/workflows/.containerize.yml
+    permissions:
+      contents: read
+      packages: write
+  deploy-review:
+    needs: containerize
+    uses: ./.github/workflows/.deploy.yml
+    secrets: inherit
+    with:
+      environment: pr-${{ github.event.pull_request.number }}
+      # change the tier to "prod" for example to test the review app with prod config
+      # BE CAREFUL WHEN DOING SO!
+      tier: review
+      image: ${{ needs.containerize.outputs.image }}

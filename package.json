@@ -1,21 +1,27 @@
 {
-  "name": "cakeboxes-server",
-  "version": "0.1.1",
   "private": true,
+  "name": "app",
+  "version": "0.1.0",
+  "type": "module",
   "scripts": {
-    "dev": "ts-node src/server.ts",
-    "build": "tsc -p .",
-    "start": "node dist/server.js"
+    "dev": "tsx --watch src/main.ts",
+    "check:types": "tsc --noEmit",
+    "check:format": "prettier --ignore-path .gitignore --check .",
+    "build": "esbuild src/main.ts --bundle --minify --sourcemap --platform=node --format=esm --packages=external --outfile=dist/main.js"
   },
+  "author": "David Adamson",
+  "license": "MIT",
   "dependencies": {
-    "express": "^4.19.2",
-    "ws": "^8.18.0"
+    "express": "^5.1.0",
+    "ws": "^8.18.3"
   },
   "devDependencies": {
-    "@types/express": "^4.17.21",
-    "@types/node": "^22.5.0",
-    "@types/ws": "^8.5.10",
-    "ts-node": "^10.9.2",
-    "typescript": "^5.5.4"
+    "@types/express": "^5.0.3",
+    "@types/node": "^22.13.5",
+    "@types/ws": "^8.18.1",
+    "esbuild": "^0.25.0",
+    "prettier": "^3.5.2",
+    "tsx": "^4.19.3",
+    "typescript": "^5.7.3"
   }
 }

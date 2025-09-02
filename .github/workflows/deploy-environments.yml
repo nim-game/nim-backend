@@ -1,0 +1,26 @@
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      # add branches or tags if needed (depends on the branching model)
+
+concurrency:
+  group: ${{ github.workflow }}
+
+jobs:
+  containerize:
+    uses: ./.github/workflows/.containerize.yml
+    permissions:
+      contents: read
+      packages: write
+  deploy-prod:
+    needs:
+      - containerize
+      # add a dependency on deploy-dev or deploy-staging, if you want to introduce a dedicated dev or staging env
+    uses: ./.github/workflows/.deploy.yml
+    secrets: inherit
+    with:
+      environment: prod
+      tier: prod
+      image: ${{ needs.containerize.outputs.image }}
