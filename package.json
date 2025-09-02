@@ -7,7 +7,7 @@
     "dev": "tsx --watch src/main.ts",
     "check:types": "tsc --noEmit",
     "check:format": "prettier --ignore-path .gitignore --check .",
-    "build": "esbuild src/main.ts --bundle --minify --sourcemap --platform=node --format=esm --packages=external --outfile=dist/main.js"
+    "build": "tsc --noEmit && esbuild src/main.ts --bundle --minify --sourcemap --platform=node --format=esm --outfile=dist/main.js"
   },
   "author": "David Adamson",
   "license": "MIT",
