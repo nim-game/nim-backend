@@ -5,7 +5,7 @@ import type { Socket } from 'net';
 import type { BoxState, ServerMessage, ClientMessage } from './types';
 
 
-const PORT = 8080;
+const PORT = 3000;
 
 const app = express();
 const main = app.listen(PORT, () => console.log(`[cakeboxes] http/ws on :${PORT}`));
