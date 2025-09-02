@@ -2,7 +2,7 @@ on:
   workflow_dispatch:
   push:
     branches:
-      - master
+      - main
       # add branches or tags if needed (depends on the branching model)
 
 concurrency:

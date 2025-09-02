@@ -6,7 +6,7 @@ metadata:
     gitRevision: {{ .Values.git.revision | quote }}
     gitVersion: {{ .Values.git.version | quote }}
 spec:
-  replicas: {{ .Values.replicas }}
+  replicas: 1
   strategy:
     type: RollingUpdate
     rollingUpdate:
@@ -23,11 +23,6 @@ spec:
       containers:
         - name: app
           image: {{ .Values.image }}
-          envFrom:
-            - configMapRef:
-                name: {{ .Release.Name }}
-            - secretRef:
-                name: {{ .Release.Name }}
           readinessProbe:
             httpGet:
               path: /
