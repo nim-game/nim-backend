@@ -3,11 +3,16 @@ import {createServer, type IncomingMessage, type ServerResponse} from "node:http
 import {setInterval, clearInterval} from "node:timers";
 
 // --- Typen ---
-type BoxState = boolean[];
+type BoxState = boolean[][];
 type ServerMessage = { type: "state"; boxes: BoxState };
 
 // In-Memory State
-let boxes: BoxState = [true, true, true, true, true];
+let boxes: BoxState = [
+    [true],
+    [true, true, true],
+    [true, true, true, true, true],
+    [true, true, true,true, true, true,true]
+];
 
 // Verbundene Clients (halten SSE-Verbindung)
 const clients = new Set<ServerResponse>();
@@ -56,10 +61,12 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
         req.on("data", (c) => (body += c));
         req.on("end", () => {
             try {
-                const {index} = JSON.parse(body) as { index: number };
-                if (Number.isInteger(index) && boxes[index]) boxes[index] = false;
-                res.writeHead(200, {"Access-Control-Allow-Origin": "*"}).end("ok");
-                broadcast();
+                const {indexRow, indexLine} = JSON.parse(body) as { indexRow: number; indexLine: number };
+                if (Number.isInteger(indexRow) && Number.isInteger(indexLine) && boxes[indexRow][indexLine] ) {
+                    boxes[indexRow][indexLine] = false;
+                    res.writeHead(200, {"Access-Control-Allow-Origin": "*"}).end("ok");
+                    broadcast();
+                }
             } catch {
                 res.writeHead(400).end("bad");
             }
@@ -68,7 +75,12 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
     }
 
     if (req.url === "/reset" && req.method === "POST") {
-        boxes = [true, true, true, true, true];
+        boxes = [
+            [true],
+            [true, true, true],
+            [true, true, true, true, true],
+            [true, true, true,true, true, true,true]
+        ];
         res.writeHead(200, {"Access-Control-Allow-Origin": "*"}).end("ok");
         broadcast();
         return;
@@ -79,4 +91,4 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
     res.writeHead(404).end("not found");
 });
 
-server.listen(3000, () => console.log("[cakeboxes] http/sse on :8000"));
+server.listen(3000, () => console.log("[cakeboxes] http/sse on :3000"));
