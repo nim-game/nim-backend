@@ -63,4 +63,4 @@ const server = createServer(async (req, res) => {
     res.writeHead(404).end('not found');
 });
 
-server.listen(8000, () => console.log('[cakeboxes] http/sse on :8000'));
+server.listen(3000, () => console.log('[cakeboxes] http/sse on :8000'));
