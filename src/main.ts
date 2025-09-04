@@ -1,6 +1,6 @@
 // server.ts – ESM-kompatibel
-import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { setInterval, clearInterval } from "node:timers";
+import {createServer, type IncomingMessage, type ServerResponse} from "node:http";
+import {setInterval, clearInterval} from "node:timers";
 
 // --- Typen ---
 type BoxState = boolean[];
@@ -22,7 +22,7 @@ function sse(res: ServerResponse) {
     clients.add(res);
 
     // Initialer Zustand
-    res.write(`data: ${JSON.stringify({ type: "state", boxes })}\n\n`);
+    res.write(`data: ${JSON.stringify({type: "state", boxes})}\n\n`);
 
     // Heartbeat
     const hb = setInterval(() => res.write(`: ping\n\n`), 15000);
@@ -34,7 +34,7 @@ function sse(res: ServerResponse) {
 }
 
 function broadcast() {
-    const data = `data: ${JSON.stringify({ type: "state", boxes } satisfies ServerMessage)}\n\n`;
+    const data = `data: ${JSON.stringify({type: "state", boxes} satisfies ServerMessage)}\n\n`;
     for (const c of clients) c.write(data);
 }
 
@@ -56,9 +56,9 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
         req.on("data", (c) => (body += c));
         req.on("end", () => {
             try {
-                const { index } = JSON.parse(body) as { index: number };
+                const {index} = JSON.parse(body) as { index: number };
                 if (Number.isInteger(index) && boxes[index]) boxes[index] = false;
-                res.writeHead(200, { "Access-Control-Allow-Origin": "*" }).end("ok");
+                res.writeHead(200, {"Access-Control-Allow-Origin": "*"}).end("ok");
                 broadcast();
             } catch {
                 res.writeHead(400).end("bad");
@@ -69,7 +69,7 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
 
     if (req.url === "/reset" && req.method === "POST") {
         boxes = [true, true, true, true, true];
-        res.writeHead(200, { "Access-Control-Allow-Origin": "*" }).end("ok");
+        res.writeHead(200, {"Access-Control-Allow-Origin": "*"}).end("ok");
         broadcast();
         return;
     }
