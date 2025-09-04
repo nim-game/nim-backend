@@ -1,5 +1,4 @@
 // server.ts – ESM-kompatibel
-
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
 import { setInterval, clearInterval } from "node:timers";
 
@@ -80,4 +79,4 @@ const server = createServer(async (req: IncomingMessage, res: ServerResponse) =>
     res.writeHead(404).end("not found");
 });
 
-server.listen(3000, () => console.log("[cakeboxes] http/sse on :8000"));
+server.listen(8000, () => console.log("[cakeboxes] http/sse on :8000"));
